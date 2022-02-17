@@ -1,0 +1,56 @@
+//
+// !!! WARNING !!! AUTO-GENERATED FILE!
+// PLEASE DO NOT MODIFY IT AND USE "platformio.ini":
+// https://docs.platformio.org/page/projectconf/section_env_build.html#build-flags
+//
+{
+    "configurations": [
+        {
+            "name": "PlatformIO",
+            "includePath": [
+                "/Users/jonicmecija/Documents/PlatformIO/Projects/arduino-dw1000/include",
+                "/Users/jonicmecija/Documents/PlatformIO/Projects/arduino-dw1000/src",
+                "/Users/jonicmecija/.platformio/packages/framework-arduino-avr/libraries/SPI/src",
+                "/Users/jonicmecija/.platformio/packages/framework-arduino-avr/cores/arduino",
+                "/Users/jonicmecija/.platformio/packages/framework-arduino-avr/variants/standard",
+                "/Users/jonicmecija/.platformio/packages/framework-arduino-avr/libraries/EEPROM/src",
+                "/Users/jonicmecija/.platformio/packages/framework-arduino-avr/libraries/HID/src",
+                "/Users/jonicmecija/.platformio/packages/framework-arduino-avr/libraries/SoftwareSerial/src",
+                "/Users/jonicmecija/.platformio/packages/framework-arduino-avr/libraries/Wire/src",
+                ""
+            ],
+            "browse": {
+                "limitSymbolsToIncludedHeaders": true,
+                "path": [
+                    "/Users/jonicmecija/Documents/PlatformIO/Projects/arduino-dw1000/include",
+                    "/Users/jonicmecija/Documents/PlatformIO/Projects/arduino-dw1000/src",
+                    "/Users/jonicmecija/.platformio/packages/framework-arduino-avr/libraries/SPI/src",
+                    "/Users/jonicmecija/.platformio/packages/framework-arduino-avr/cores/arduino",
+                    "/Users/jonicmecija/.platformio/packages/framework-arduino-avr/variants/standard",
+                    "/Users/jonicmecija/.platformio/packages/framework-arduino-avr/libraries/EEPROM/src",
+                    "/Users/jonicmecija/.platformio/packages/framework-arduino-avr/libraries/HID/src",
+                    "/Users/jonicmecija/.platformio/packages/framework-arduino-avr/libraries/SoftwareSerial/src",
+                    "/Users/jonicmecija/.platformio/packages/framework-arduino-avr/libraries/Wire/src",
+                    ""
+                ]
+            },
+            "defines": [
+                "PLATFORMIO=50205",
+                "ARDUINO_AVR_UNO",
+                "F_CPU=16000000L",
+                "ARDUINO_ARCH_AVR",
+                "ARDUINO=10808",
+                "__AVR_ATmega328P__",
+                ""
+            ],
+            "cStandard": "c11",
+            "cppStandard": "c++11",
+            "compilerPath": "/Users/jonicmecija/.platformio/packages/toolchain-atmelavr/bin/avr-gcc",
+            "compilerArgs": [
+                "-mmcu=atmega328p",
+                ""
+            ]
+        }
+    ],
+    "version": 4
+}

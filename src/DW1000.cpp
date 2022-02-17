@@ -1480,6 +1480,10 @@ boolean DW1000Class::isClockProblem() {
 	boolean clkllErr, rfllErr;
 	clkllErr = getBit(_sysstatus, LEN_SYS_STATUS, CLKPLL_LL_BIT);
 	rfllErr  = getBit(_sysstatus, LEN_SYS_STATUS, RFPLL_LL_BIT);
+
+	//this is a new change
+	Serial.println(clkllErr);
+
 	if(clkllErr || rfllErr) {
 		return true;
 	}
