@@ -121,7 +121,7 @@ void DW1000Class::select(uint8_t ss) {
 	// try locking clock at PLL speed (should be done already,
 	// but just to be sure)
 	enableClock(AUTO_CLOCK);
-	delay(5);
+	delay(100);
 	// reset chip (either soft or hard)
 	if(_rst != 0xff) {
 		// dw1000 data sheet v2.08 §5.6.1 page 20, the RSTn pin should not be driven high but left floating.
@@ -715,6 +715,7 @@ void DW1000Class::handleInterrupt() {
 		(*_handleError)();
 	}
 	if(isTransmitDone() && _handleSent != 0) {
+		
 		(*_handleSent)();
 		clearTransmitStatus();
 	}
@@ -737,6 +738,8 @@ void DW1000Class::handleInterrupt() {
 			startReceive();
 		}
 	} else if(isReceiveDone() && _handleReceived != 0) {
+		
+
 		(*_handleReceived)();
 		clearReceiveStatus();
 		if(_permanentReceive) {
@@ -1445,6 +1448,7 @@ void DW1000Class::getSystemTimestamp(byte data[]) {
 }
 
 boolean DW1000Class::isTransmitDone() {
+	
 	return getBit(_sysstatus, LEN_SYS_STATUS, TXFRS_BIT);
 }
 
@@ -1481,11 +1485,15 @@ boolean DW1000Class::isClockProblem() {
 	clkllErr = getBit(_sysstatus, LEN_SYS_STATUS, CLKPLL_LL_BIT);
 	rfllErr  = getBit(_sysstatus, LEN_SYS_STATUS, RFPLL_LL_BIT);
 
-	//this is a new change
-	Serial.println(clkllErr);
+	
 
 	if(clkllErr || rfllErr) {
 		return true;
+		//this is a new edit
+		Serial.print("clkllErr: ");
+		Serial.println(clkllErr);
+		Serial.print("rfllErr: ");
+		Serial.println(rfllErr);
 	}
 	return false;
 }
