@@ -79,14 +79,15 @@ constexpr byte DW1000Class::MODE_LONGDATA_FAST_LOWPOWER[];
 constexpr byte DW1000Class::MODE_SHORTDATA_FAST_ACCURACY[];
 constexpr byte DW1000Class::MODE_LONGDATA_FAST_ACCURACY[];
 constexpr byte DW1000Class::MODE_LONGDATA_RANGE_ACCURACY[];
-/*
-const byte DW1000Class::MODE_LONGDATA_RANGE_LOWPOWER[] = {TRX_RATE_110KBPS, TX_PULSE_FREQ_16MHZ, TX_PREAMBLE_LEN_2048};
-const byte DW1000Class::MODE_SHORTDATA_FAST_LOWPOWER[] = {TRX_RATE_6800KBPS, TX_PULSE_FREQ_16MHZ, TX_PREAMBLE_LEN_128};
-const byte DW1000Class::MODE_LONGDATA_FAST_LOWPOWER[]  = {TRX_RATE_6800KBPS, TX_PULSE_FREQ_16MHZ, TX_PREAMBLE_LEN_1024};
-const byte DW1000Class::MODE_SHORTDATA_FAST_ACCURACY[] = {TRX_RATE_6800KBPS, TX_PULSE_FREQ_64MHZ, TX_PREAMBLE_LEN_128};
-const byte DW1000Class::MODE_LONGDATA_FAST_ACCURACY[]  = {TRX_RATE_6800KBPS, TX_PULSE_FREQ_64MHZ, TX_PREAMBLE_LEN_1024};
-const byte DW1000Class::MODE_LONGDATA_RANGE_ACCURACY[] = {TRX_RATE_110KBPS, TX_PULSE_FREQ_64MHZ, TX_PREAMBLE_LEN_2048};
-*/
+
+// const byte DW1000Class::MODE_LONGDATA_RANGE_LOWPOWER[] = {TRX_RATE_110KBPS, TX_PULSE_FREQ_16MHZ, TX_PREAMBLE_LEN_2048};
+
+// const byte DW1000Class::MODE_SHORTDATA_FAST_LOWPOWER[] = {TRX_RATE_6800KBPS, TX_PULSE_FREQ_16MHZ, TX_PREAMBLE_LEN_128};
+// const byte DW1000Class::MODE_LONGDATA_FAST_LOWPOWER[]  = {TRX_RATE_6800KBPS, TX_PULSE_FREQ_16MHZ, TX_PREAMBLE_LEN_1024};
+// const byte DW1000Class::MODE_SHORTDATA_FAST_ACCURACY[] = {TRX_RATE_6800KBPS, TX_PULSE_FREQ_64MHZ, TX_PREAMBLE_LEN_128};
+// const byte DW1000Class::MODE_LONGDATA_FAST_ACCURACY[]  = {TRX_RATE_6800KBPS, TX_PULSE_FREQ_64MHZ, TX_PREAMBLE_LEN_1024};
+// const byte DW1000Class::MODE_LONGDATA_RANGE_ACCURACY[] = {TRX_RATE_110KBPS, TX_PULSE_FREQ_64MHZ, TX_PREAMBLE_LEN_2048};
+
 // range bias tables (500 MHz in [mm] and 900 MHz in [2mm] - to fit into bytes)
 constexpr byte DW1000Class::BIAS_500_16[];
 constexpr byte DW1000Class::BIAS_500_64[];
@@ -225,6 +226,7 @@ void DW1000Class::enableClock(byte clock) {
 		_currentSPI = &_fastSPI;
 		pmscctrl0[0] &= 0xFC;
 		pmscctrl0[0] |= PLL_CLOCK;
+		
 	} else {
 		// TODO deliver proper warning
 	}
@@ -712,18 +714,24 @@ void DW1000Class::handleInterrupt() {
 	// read current status and handle via callbacks
 	readSystemEventStatusRegister();
 	if(isClockProblem() /* TODO and others */ && _handleError != 0) {
+		Serial.println("clock problem ");
+
 		(*_handleError)();
 	}
 	if(isTransmitDone() && _handleSent != 0) {
-		
+		Serial.println("transmit is done ");
+
 		(*_handleSent)();
 		clearTransmitStatus();
 	}
 	if(isReceiveTimestampAvailable() && _handleReceiveTimestampAvailable != 0) {
+		Serial.println("time stame is available");
+
 		(*_handleReceiveTimestampAvailable)();
 		clearReceiveTimestampAvailableStatus();
 	}
 	if(isReceiveFailed() && _handleReceiveFailed != 0) {
+		Serial.println("receive failed ");
 		(*_handleReceiveFailed)();
 		clearReceiveStatus();
 		if(_permanentReceive) {
@@ -731,6 +739,7 @@ void DW1000Class::handleInterrupt() {
 			startReceive();
 		}
 	} else if(isReceiveTimeout() && _handleReceiveTimeout != 0) {
+		Serial.println("receive time out");
 		(*_handleReceiveTimeout)();
 		clearReceiveStatus();
 		if(_permanentReceive) {
@@ -739,7 +748,7 @@ void DW1000Class::handleInterrupt() {
 		}
 	} else if(isReceiveDone() && _handleReceived != 0) {
 		
-
+		Serial.println("recieve is done ");
 		(*_handleReceived)();
 		clearReceiveStatus();
 		if(_permanentReceive) {
@@ -1262,8 +1271,9 @@ void DW1000Class::setDefaults() {
 		suppressFrameCheck(false);
 		//for global frame filtering
 		setFrameFilter(false);
-		/* old defaults with active frame filter - better set filter in every script where you really need it
-		setFrameFilter(true);
+		// old defaults with active frame filter - better set filter in every script where you really need it
+		// setFrameFilter(true);
+		/* 
 		//for data frame (poll, poll_ack, range, range report, range failed) filtering
 		setFrameFilterAllowData(true);
 		//for reserved (blink) frame filtering

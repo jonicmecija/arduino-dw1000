@@ -21,6 +21,9 @@
 #ifndef _DW1000CONSTANTS_H_INCLUDED
 #define _DW1000CONSTANTS_H_INCLUDED
 
+// sub-register 
+#define EC_CTRL 0x24
+
 // time stamp byte length
 #define LEN_STAMP 5
 

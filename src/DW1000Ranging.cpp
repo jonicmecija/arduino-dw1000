@@ -334,8 +334,12 @@ DW1000Device* DW1000RangingClass::getDistantDevice() {
 void DW1000RangingClass::checkForReset() {
 	uint32_t curMillis = millis();
 	if(!_sentAck && !_receivedAck) {
+		Serial.println("sent and received not acknowledged");
+
 		// check if inactive
 		if(curMillis-_lastActivity > _resetPeriod) {
+			Serial.println("reset inactive");
+
 			resetInactive();
 		}
 		return; // TODO cc
@@ -373,6 +377,7 @@ int16_t DW1000RangingClass::detectMessageType(byte datas[]) {
 void DW1000RangingClass::loop() {
 	//we check if needed to reset !
 	checkForReset();
+
 	uint32_t time = millis(); // TODO other name - too close to "timer"
 	if(time-timer > _timerDelay) {
 		timer = time;
@@ -380,6 +385,8 @@ void DW1000RangingClass::loop() {
 	}
 	
 	if(_sentAck) {
+		Serial.println("sent acknowledged");
+
 		_sentAck = false;
 		
 		// TODO cc
@@ -444,6 +451,7 @@ void DW1000RangingClass::loop() {
 	
 	//check for new received message
 	if(_receivedAck) {
+		Serial.println("received acknowledged");
 		_receivedAck = false;
 		
 		//we read the datas from the modules:
